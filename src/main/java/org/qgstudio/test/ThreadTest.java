@@ -15,7 +15,7 @@ public class ThreadTest {
 
     public static void main(String[] args) {
 
-        String msg = "address:2A6@data:ABCD#";
-        System.out.println(SocketMsgAnalyUtils.getMessage(msg));
+        String msg = "ping@2A6";
+        System.out.println(SocketMsgAnalyUtils.analyAddress(msg));
     }
 }

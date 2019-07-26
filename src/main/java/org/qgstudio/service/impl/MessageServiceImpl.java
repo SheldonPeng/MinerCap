@@ -34,6 +34,8 @@ public class MessageServiceImpl implements MessageService {
     private SocketClientPool socketClientPool = SocketClientPool.getClientPool();
     // 格式化工具
     private Charset charset = Charset.forName("UTF-8");
+    // json格式化工具
+    ObjectMapper objectMapper = new ObjectMapper();
 
 
 
@@ -55,10 +57,14 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void sendMsgToWebSocket(String message) {
 
-        List<Session> channelList = webSocketClientPool.getAllClient();
-        for (Session webSocketSession :
-                channelList) {
-            webSocketSession.getAsyncRemote().sendText(message);
+        try {
+            List<WebSocketSession> channelList = webSocketClientPool.getAllClient();
+            for (WebSocketSession webSocketSession :
+                    channelList) {
+                webSocketSession.sendMessage(new TextMessage(message));
+            }
+        } catch (IOException e) {
+            System.out.println("发送消息出现异常");
         }
 
     }
@@ -67,13 +73,40 @@ public class MessageServiceImpl implements MessageService {
     public void analyMessage(String message) {
 
         try {
+
         Message msg = SocketMsgAnalyUtils.getMessage(message);
-        ObjectMapper objectMapper = new ObjectMapper();
             sendMsgToWebSocket(objectMapper.writeValueAsString(msg));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void sendPingMsgToWebSocket(String message) {
 
+        try {
+            Message msg = new Message();
+            msg.setStatus(true);
+            msg.setData("");
+            msg.setAddress(SocketMsgAnalyUtils.analyAddress(message));
+            sendMsgToWebSocket(objectMapper.writeValueAsString(msg));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendModelExceToWebSocket(String model) {
+
+        try {
+            Message msg = new Message();
+            msg.setStatus(false);
+            msg.setAddress(model);
+            msg.setData("");
+            sendMsgToWebSocket(objectMapper.writeValueAsString(msg));
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 }
