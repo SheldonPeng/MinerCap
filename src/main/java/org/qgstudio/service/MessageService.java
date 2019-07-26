@@ -30,4 +30,22 @@ public interface MessageService {
      * @Date: 2019-07-25
      */
     void analyMessage(String message);
+
+    /**
+     * @Description: 发送小模块的心跳信息给手机端
+     * @Param: [message]
+     * @return: void
+     * @Author: SheldonPeng
+     * @Date: 2019-07-26
+     */
+    void sendPingMsgToWebSocket(String message);
+
+    /**
+     * @Description: 发送小模块异常的消息给移动端
+     * @Param: []
+     * @return: void
+     * @Author: SheldonPeng
+     * @Date: 2019-07-26
+     */
+    void sendModelExceToWebSocket(String model);
 }

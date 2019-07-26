@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class WebsocketClientPool {
 
     // 用于记录安卓客户端的连接session
-    private static final CopyOnWriteArraySet<Session> clients;
+    private static final CopyOnWriteArraySet<WebSocketSession> clients;
 
     // 建立单例对象
     private static final WebsocketClientPool clientPool = new WebsocketClientPool();
@@ -30,7 +30,7 @@ public class WebsocketClientPool {
     // 初始化集合
     static {
 
-        clients = new CopyOnWriteArraySet<Session>();
+        clients = new CopyOnWriteArraySet<WebSocketSession>();
     }
 
     /**
@@ -40,7 +40,7 @@ public class WebsocketClientPool {
      * @Author: SheldonPeng
      * @Date: 2019-07-25
      */
-    public void addClient(Session session) {
+    public void addClient(WebSocketSession session) {
 
         // 检测是否已有用户在线
         if (!clients.contains(session)) {
@@ -57,7 +57,7 @@ public class WebsocketClientPool {
      * @Date: 2019-07-25
      */
 
-    public void exitClient(Session session) throws IOException {
+    public void exitClient(WebSocketSession session) throws IOException {
 
         // 检测用户是否在集合中
         if (clients.contains(session)) {
@@ -79,11 +79,11 @@ public class WebsocketClientPool {
      * @Author: SheldonPeng
      * @Date: 2019-07-25
      */
-    public List<Session> getAllClient(){
+    public List<WebSocketSession> getAllClient(){
 
-        List<Session> sessions = new ArrayList<>();
+        List<WebSocketSession> sessions = new ArrayList<>();
 
-        for (Session session:
+        for (WebSocketSession session:
              clients) {
             // 判断客户端是否为空客户端
             if( session != null){

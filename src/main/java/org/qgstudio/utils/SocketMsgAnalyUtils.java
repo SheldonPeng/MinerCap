@@ -30,6 +30,13 @@ public class SocketMsgAnalyUtils {
 
     }
 
+    /**
+     * @Description: 解析嵌入式设备中的正常信息
+     * @Param: [message]
+     * @return: org.qgstudio.model.Message
+     * @Author: SheldonPeng
+     * @Date: 2019-07-26
+     */
     public static Message getMessage(String message){
 
         Message msg  =  new Message();
@@ -37,8 +44,7 @@ public class SocketMsgAnalyUtils {
         try {
             if( ! (message.contains("#") || message.contains("@"))){
 
-                msg.setStatus(false);
-                return msg;
+                msg = null;
             }
             if ( message.contains("address") && message.contains("data") ){
 
@@ -48,24 +54,41 @@ public class SocketMsgAnalyUtils {
                 // address字符不全，需要由后台进行补全
                 msg.setAddress(content[0].substring(8,10) + "0" + content[0].substring(10));
 
+                // 获取嵌入式端设备传来的data并解析
                 msg.setData(dataMap.get(content[1].substring(5,9)));
 
+                // 如果发送的data没有在集合中，即data异常
                 if( msg.getData() == null){
-                    msg.setStatus(false);
-                }else {
 
-                    msg.setStatus(true);
+                    msg = null;
                 }
             } else if ( message.contains("address") && message.contains("location")){
 
                 //
             }else {
 
-                msg.setStatus(false);
+                msg = null;
             }
         } catch (Exception e) {
-            msg.setStatus(false);
+
+            msg = null;
         }
         return msg;
+    }
+
+    /**
+     * @Description: 解析嵌入式设备(心跳包)发送的地址信息 格式为 ping@XXXX
+     * @Param: [message]
+     * @return: org.qgstudio.model.Message
+     * @Author: SheldonPeng
+     * @Date: 2019-07-26
+     */
+    public static String analyAddress(String message){
+
+        // 解析前的地址信息
+        String oldAddress = message.split("@")[1];
+        // 返回解析后的地址信息
+        return (oldAddress.substring(0,2) + "0" + oldAddress.substring(2));
+
     }
 }

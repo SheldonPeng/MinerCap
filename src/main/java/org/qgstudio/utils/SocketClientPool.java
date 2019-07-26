@@ -1,6 +1,7 @@
 package org.qgstudio.utils;
 
 
+import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,16 @@ public class SocketClientPool {
      */
     public void exitClient(SocketChannel client){
 
-        if( clients.contains(client)){
+        try {
+            if( clients.contains(client)){
 
-            clients.remove(client);
+                clients.remove(client);
+                client.shutdownInput();
+                client.shutdownOutput();
+                client.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
