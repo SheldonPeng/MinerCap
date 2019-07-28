@@ -1,5 +1,7 @@
 package org.qgstudio.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qgstudio.model.Feedback;
 import org.qgstudio.utils.SocketClientPool;
 import org.qgstudio.service.MessageService;
 import org.qgstudio.service.impl.MessageServiceImpl;
@@ -72,9 +74,25 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
+
+        ObjectMapper objectMapper = new ObjectMapper();
         System.out.println(session.getRemoteAddress().getAddress().getHostName() + message.toString());
 
-        messageService.sendMsgToSocket(message.getPayload());
+        Feedback feedback = (Feedback) objectMapper.readValue(message.getPayload(),Feedback.class);
+        String newMsg = "";
+
+        if (feedback != null){
+
+            if ( feedback.isLocate()){
+
+                newMsg = "locate@" + feedback.getAddress() + "#";
+
+            } else if ( feedback.isRescue()){
+
+                newMsg = "rescue@" + feedback.getAddress() + "#";
+            }
+        }
+        messageService.sendMsgToSocket(newMsg);
 
     }
 

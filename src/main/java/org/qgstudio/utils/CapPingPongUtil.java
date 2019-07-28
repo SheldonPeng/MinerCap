@@ -24,7 +24,7 @@ public class CapPingPongUtil extends TimerTask {
     private MessageService messageService = new MessageServiceImpl();
 
     // 超时时间
-    private final int TIME_OUT = 1000*7;
+    private final int TIME_OUT = 1000*8;
 
     // socket客户端上次活跃时间记录
     private static  volatile Map<SocketChannel,Long>timeMileMap;

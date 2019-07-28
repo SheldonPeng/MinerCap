@@ -1,5 +1,9 @@
 package org.qgstudio.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.qgstudio.model.Feedback;
+import org.qgstudio.model.Message;
+
 public interface MessageService {
 
 
@@ -22,14 +26,15 @@ public interface MessageService {
      */
     void sendMsgToWebSocket(String message);
 
+
     /**
-     * @Description: 解析socket(嵌入式端)的信息
+     * @Description: 发送data类型的数据给移动端
      * @Param: [message]
      * @return: void
      * @Author: SheldonPeng
-     * @Date: 2019-07-25
+     * @Date: 2019-07-28
      */
-    void analyMessage(String message);
+    void sendDataMsgToWebSocket(Message message) throws JsonProcessingException;
 
     /**
      * @Description: 发送小模块的心跳信息给手机端
@@ -48,4 +53,13 @@ public interface MessageService {
      * @Date: 2019-07-26
      */
     void sendModelExceToWebSocket(String model);
+
+    /**
+     * @Description: 发送反馈类型的消息给移动端
+     * @Param: [feekBack]
+     * @return: void
+     * @Author: SheldonPeng
+     * @Date: 2019-07-28
+     */
+    void sendFeekBachMsgToWebSocket(Feedback feekBack) throws JsonProcessingException;
 }

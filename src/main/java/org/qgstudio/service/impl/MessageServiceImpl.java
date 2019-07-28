@@ -2,6 +2,7 @@ package org.qgstudio.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qgstudio.model.Feedback;
 import org.qgstudio.model.Message;
 import org.qgstudio.utils.SocketClientPool;
 import org.qgstudio.utils.SocketMsgAnalyUtils;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import javax.websocket.Session;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
@@ -70,15 +70,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void analyMessage(String message) {
+    public void sendDataMsgToWebSocket(Message message) throws JsonProcessingException {
 
-        try {
-
-        Message msg = SocketMsgAnalyUtils.getMessage(message);
-            sendMsgToWebSocket(objectMapper.writeValueAsString(msg));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        sendMsgToWebSocket(objectMapper.writeValueAsString(message));
     }
 
     @Override
@@ -88,7 +82,7 @@ public class MessageServiceImpl implements MessageService {
             Message msg = new Message();
             msg.setStatus(true);
             msg.setData("");
-            msg.setAddress(SocketMsgAnalyUtils.analyAddress(message));
+            msg.setAddress(message);
             sendMsgToWebSocket(objectMapper.writeValueAsString(msg));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -108,5 +102,12 @@ public class MessageServiceImpl implements MessageService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void sendFeekBachMsgToWebSocket(Feedback feekBack) throws JsonProcessingException {
+
+        System.out.println(feekBack);
+        sendMsgToWebSocket(objectMapper.writeValueAsString(feekBack));
     }
 }
