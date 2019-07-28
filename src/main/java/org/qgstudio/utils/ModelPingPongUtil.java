@@ -20,7 +20,7 @@ public class ModelPingPongUtil extends TimerTask {
     private MessageService messageService = new MessageServiceImpl();
 
     // 超时时间
-    private final int TIME_OUT = 1000*7;
+    private final int TIME_OUT = 1000*8;
 
     // 小模块的活跃时间记录
     private static volatile Map<String,Long>modelTimeMileMap;
@@ -40,6 +40,7 @@ public class ModelPingPongUtil extends TimerTask {
             if( System.currentTimeMillis() - modelTimeMileMap.get(model) > TIME_OUT){
 
                 System.out.println(model + "小模块下线");
+                modelTimeMileMap.remove(model);
                 messageService.sendModelExceToWebSocket(model);
             }
         }

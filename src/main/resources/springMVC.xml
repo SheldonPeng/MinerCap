@@ -14,12 +14,14 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframew
     </context:component-scan>
 
 
+    <!--    视图解析器配置-->
     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
+     <!--   静态资源配置   -->
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
