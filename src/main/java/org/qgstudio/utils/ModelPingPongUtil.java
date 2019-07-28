@@ -36,7 +36,7 @@ public class ModelPingPongUtil extends TimerTask {
 
         for (String model:
              modelTimeMileMap.keySet()) {
-
+            // 检测小模块的活跃时间，超时则下线
             if( System.currentTimeMillis() - modelTimeMileMap.get(model) > TIME_OUT){
 
                 System.out.println(model + "小模块下线");
