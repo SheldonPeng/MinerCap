@@ -83,15 +83,18 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
         if (feedback != null){
 
+             // 请求定位的内容
             if ( feedback.isLocate()){
 
-                newMsg = "locate@" + feedback.getAddress() + "#";
+                newMsg = "locate@" + feedback.getAddress() + "%";
 
+                // 请求反馈的内容
             } else if ( feedback.isRescue()){
 
-                newMsg = "rescue@" + feedback.getAddress() + "#";
+                newMsg = "rescue@" + feedback.getAddress() + "%";
             }
         }
+        System.out.println("向嵌入式端发送了" + newMsg);
         messageService.sendMsgToSocket(newMsg);
 
     }
