@@ -8,6 +8,7 @@ import org.qgstudio.service.MessageService;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -25,11 +26,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author: SheldonPeng
  * @Date: 2019-07-25
  */
-
 public class SocketThread extends Thread{
 
     // 端口号
-    private int port = 8888;
+    private static int port;
+
+    private static String url;
     // 选择器，用于注册chanel
     private Selector selector = null;
     // 指定发送的字符类型
@@ -58,13 +60,22 @@ public class SocketThread extends Thread{
     public SocketThread() {
 
         try {
+
+            // 读取配置文件
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("network.properties");
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            port = Integer.parseInt(properties.getProperty("port"));
+            url = properties.getProperty("socketUrl");
+
+            // 开启NIO socket的端口与地址
             ServerSocketChannel socketChannel = ServerSocketChannel.open();
-            socketChannel.bind(new InetSocketAddress("localhost",this.port));
+            socketChannel.bind(new InetSocketAddress(url, port));
             socketChannel.configureBlocking(false);
 
             selector = Selector.open();
             socketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            System.out.println("服务端已启动,端口为： " + this.port);
+            System.out.println("服务端已启动,端口为： " + port);
 
             // 定时器检测帽子的心跳状态
             Timer cptTimer = new Timer();
