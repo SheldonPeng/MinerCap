@@ -61,5 +61,5 @@ public interface MessageService {
      * @Author: SheldonPeng
      * @Date: 2019-07-28
      */
-    void sendFeekBachMsgToWebSocket(Feedback feekBack) throws JsonProcessingException;
+    void sendFeedBackMsgToWebSocket(Feedback feedBack) throws JsonProcessingException;
 }
