@@ -1,5 +1,6 @@
 package org.qgstudio.utils;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.websocket.Session;

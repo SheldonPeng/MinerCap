@@ -50,9 +50,6 @@ public class SocketThread extends Thread{
     // 用于记录每个客户端的小模块的状态
     private static final Map<String,Long> modelTimeMileMap = new ConcurrentHashMap<>();
 
-    // 帽子连接的字符串常量
-    private final String startConnection = "嵌入式设备连接";
-
     // json工具类
     private ObjectMapper objectMapper = new ObjectMapper();
     private MessageService messageService = new MessageServiceImpl();
@@ -130,19 +127,20 @@ public class SocketThread extends Thread{
                 ServerSocketChannel server = (ServerSocketChannel) key.channel();
                 SocketChannel client = server.accept();
 
+                // 注册为非阻塞
                 client.configureBlocking(false);
                 client.register(selector, SelectionKey.OP_READ);
 
                 key.interestOps(SelectionKey.OP_ACCEPT);
                 System.out.println("新的连接 ：" + client.getRemoteAddress());
                 socketClientPool.addClient(client);
-                messageService.sendMsgToWebSocket(startConnection);
 
-                // 添加对应socket客户端的活跃时间,8S时间为嵌入式设备端启动时的配置时间
+                // 添加对应socket客户端的活跃时间,8S时间为嵌入式设备端启动时的初始化时间
                 capTimeMileMap.put(client, System.currentTimeMillis() + 1000 * 8);
 
-                // 接收到来自客户端的信息
+
             }
+            // 接收到来自客户端的信息
             if (key.isReadable()) {
 
                 SocketChannel client = (SocketChannel) key.channel();
@@ -167,6 +165,7 @@ public class SocketThread extends Thread{
                     socketClientPool.exitClient(client);
                     capTimeMileMap.remove(client);
                     modelTimeMileMap.clear();
+                    messageService.sendMsgToWebSocket("嵌入式设备下线");
                     return;
                 }
                 // socket(嵌入式客户端)主网络模块的心跳字段
@@ -196,7 +195,7 @@ public class SocketThread extends Thread{
                     for (Feedback feekBack:
                             (List<Feedback>)msgListMap.get("locate")) {
 
-                        messageService.sendFeekBachMsgToWebSocket(feekBack);
+                        messageService.sendFeedBackMsgToWebSocket(feekBack);
                     }
                 }
                 // 反馈字段
@@ -205,7 +204,7 @@ public class SocketThread extends Thread{
                     for (Feedback feekBack :
                             (List < Feedback >) msgListMap.get("rescue")) {
 
-                        messageService.sendFeekBachMsgToWebSocket(feekBack);
+                        messageService.sendFeedBackMsgToWebSocket(feekBack);
                     }
                 }
                 // 数据字段

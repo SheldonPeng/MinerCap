@@ -78,21 +78,27 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ObjectMapper objectMapper = new ObjectMapper();
         System.out.println(session.getRemoteAddress().getAddress().getHostName() + message.toString());
 
-        Feedback feedback = (Feedback) objectMapper.readValue(message.getPayload(),Feedback.class);
-        String newMsg = "";
+        String newMsg = null;
+        try {
+            Feedback feedback = (Feedback) objectMapper.readValue(message.getPayload(),Feedback.class);
+            newMsg = "";
 
-        if (feedback != null){
+            if (feedback != null){
 
-             // 请求定位的内容
-            if ( feedback.isLocate()){
+                 // 请求定位的内容
+                if ( feedback.isLocate()){
 
-                newMsg = "locate@" + feedback.getAddress() + "%";
+                    newMsg = "locate@" + feedback.getAddress() + "%";
 
-                // 请求反馈的内容
-            } else if ( feedback.isRescue()){
+                    // 请求反馈的内容
+                } else if ( feedback.isRescue()){
 
-                newMsg = "rescue@" + feedback.getAddress() + "%";
+                    newMsg = "rescue@" + feedback.getAddress() + "%";
+                }
             }
+        } catch (Exception e) {
+
+            newMsg = "error message";
         }
         System.out.println("向嵌入式端发送了" + newMsg);
         messageService.sendMsgToSocket(newMsg);

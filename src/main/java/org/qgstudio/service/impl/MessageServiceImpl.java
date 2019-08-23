@@ -61,7 +61,12 @@ public class MessageServiceImpl implements MessageService {
             List<WebSocketSession> channelList = webSocketClientPool.getAllClient();
             for (WebSocketSession webSocketSession :
                     channelList) {
-                webSocketSession.sendMessage(new TextMessage(message));
+
+                synchronized (webSocketSession){
+
+                    webSocketSession.sendMessage(new TextMessage(message));
+
+                }
             }
         } catch (IOException e) {
             System.out.println("发送消息出现异常");
@@ -105,9 +110,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void sendFeekBachMsgToWebSocket(Feedback feekBack) throws JsonProcessingException {
+    public void sendFeedBackMsgToWebSocket(Feedback feedBack) throws JsonProcessingException {
 
-        System.out.println(feekBack);
-        sendMsgToWebSocket(objectMapper.writeValueAsString(feekBack));
+        System.out.println(feedBack);
+        sendMsgToWebSocket(objectMapper.writeValueAsString(feedBack));
     }
 }
