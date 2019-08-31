@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qgstudio.model.Feedback;
 import org.qgstudio.model.Message;
+import org.qgstudio.netty.channel.ChannelSupervise;
 import org.qgstudio.utils.SocketClientPool;
 import org.qgstudio.utils.SocketMsgAnalyUtils;
-import org.qgstudio.utils.WebsocketClientPool;
 import org.qgstudio.service.MessageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
@@ -27,10 +27,7 @@ import java.util.List;
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
 
-
-    // websocket(安卓)用户连接池
-    private WebsocketClientPool webSocketClientPool = WebsocketClientPool.getClientPool();
-    // socket(嵌入式设备)客户端连接池
+    // ContextListener(嵌入式设备)客户端连接池
     private SocketClientPool socketClientPool = SocketClientPool.getClientPool();
     // 格式化工具
     private Charset charset = Charset.forName("UTF-8");
@@ -57,20 +54,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void sendMsgToWebSocket(String message) {
 
-        try {
-            List<WebSocketSession> channelList = webSocketClientPool.getAllClient();
-            for (WebSocketSession webSocketSession :
-                    channelList) {
-
-                synchronized (webSocketSession){
-
-                    webSocketSession.sendMessage(new TextMessage(message));
-
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("发送消息出现异常");
-        }
+        ChannelSupervise.send2All(message);
 
     }
 

@@ -1,5 +1,6 @@
-package org.qgstudio.controller.socket;
+package org.qgstudio.controller.ContextListener;
 
+import org.qgstudio.netty.config.WebsocketConfig;
 import org.qgstudio.service.impl.SocketThread;
 
 import javax.servlet.ServletContextEvent;
@@ -15,11 +16,12 @@ import javax.servlet.annotation.WebListener;
  * @Date: 2019-07-25
  */
 @WebListener
-public class SocketServer implements ServletContextListener {
+public class ContextListener implements ServletContextListener {
 
 
-    private SocketThread socketThread = null;
+    private static SocketThread socketThread = null;
 
+    private static WebsocketConfig websocketConfig = null;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -28,6 +30,11 @@ public class SocketServer implements ServletContextListener {
 
             socketThread = new SocketThread();
             socketThread.start();
+        }
+        if ( websocketConfig == null ){
+
+            websocketConfig = new WebsocketConfig();
+            websocketConfig.start();
         }
 
     }
@@ -38,6 +45,10 @@ public class SocketServer implements ServletContextListener {
         if( socketThread != null || socketThread.isAlive()){
 
             socketThread.interrupt();
+        }
+        if ( websocketConfig != null || websocketConfig.isAlive()){
+
+            websocketConfig.interrupt();
         }
     }
 }

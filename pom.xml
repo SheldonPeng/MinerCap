@@ -146,6 +146,11 @@
       <artifactId>spring-jdbc</artifactId>
       <version>5.1.8.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.36.Final</version>
+    </dependency>
   </dependencies>
 
   <build>

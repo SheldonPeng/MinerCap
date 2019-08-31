@@ -1,3 +1,4 @@
+/*
 package org.qgstudio.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+*/
 
 
 /**
@@ -25,6 +27,7 @@ import java.io.IOException;
  * @Author: SheldonPeng
  * @Date: 2019-07-25
  */
+/*
 @Service
 public class WebSocketHandler extends TextWebSocketHandler {
 
@@ -38,13 +41,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     private MessageService messageService = new MessageServiceImpl();
 
-    /**
+    */
+/**
      * @Description: 当新连接建立完成之后，储存连接用户的session
      * @Param: [session]
      * @return: void
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -63,13 +68,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
 
     }
-    /**
+    */
+/**
      * @Description: 接收到来自安卓客户端的消息
      * @Param: [session, message]
      * @return: void
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
+
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -105,13 +112,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     }
 
-    /**
+    */
+/**
      * @Description: 处理与安卓客户端连接断开
      * @Param: [session, status]
      * @return: void
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
+
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
@@ -132,3 +141,4 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
 }
+*/

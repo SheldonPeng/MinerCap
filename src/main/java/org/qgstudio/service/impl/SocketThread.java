@@ -38,8 +38,6 @@ public class SocketThread extends Thread{
     private Charset charset = Charset.forName("UTF-8");
     // 检测时间为5S
     private final int CHECK_TIME = 1000*4;
-    // 用于存储websocket(移动端)的客户端集合
-    private WebsocketClientPool websocketClientPool = WebsocketClientPool.getClientPool();
 
     // 用于存储socket（嵌入式端)客户端集合
     private SocketClientPool socketClientPool = SocketClientPool.getClientPool();
@@ -62,7 +60,7 @@ public class SocketThread extends Thread{
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("network.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
-            port = Integer.parseInt(properties.getProperty("port"));
+            port = Integer.parseInt(properties.getProperty("socketPort"));
             url = properties.getProperty("socketUrl");
 
             // 开启NIO socket的端口与地址
@@ -72,14 +70,14 @@ public class SocketThread extends Thread{
 
             selector = Selector.open();
             socketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            System.out.println("服务端已启动,端口为： " + port);
+            System.out.println("socket服务端已启动,端口为： " + port);
 
             // 定时器检测帽子的心跳状态
             Timer cptTimer = new Timer();
             cptTimer.schedule(new CapPingPongUtil(capTimeMileMap,modelTimeMileMap),0,CHECK_TIME);
             // 定时器检测小模块的心跳状态
-            Timer modeleTimer = new Timer();
-            modeleTimer.schedule(new ModelPingPongUtil(modelTimeMileMap),0,CHECK_TIME);
+            Timer modelTimer = new Timer();
+            modelTimer.schedule(new ModelPingPongUtil(modelTimeMileMap),0,CHECK_TIME);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,7 +166,7 @@ public class SocketThread extends Thread{
                     messageService.sendMsgToWebSocket("嵌入式设备下线");
                     return;
                 }
-                // socket(嵌入式客户端)主网络模块的心跳字段
+                // ContextListener(嵌入式客户端)主网络模块的心跳字段
                 if ("ping\t\n".equals(content.toString()) || content.toString().contains("ping")) {
 
                     client.write(charset.encode("pong"));
@@ -177,7 +175,7 @@ public class SocketThread extends Thread{
                 // 解析客户端信息中的存在字段
                 Map<String, List> msgListMap = SocketMsgAnalyUtils.analyAddress(content.toString());
 
-                // socket(嵌入式客户端)小模块心跳字段
+                // ContextListener(嵌入式客户端)小模块心跳字段
                 if (content.toString().contains("model@")) {
 
                     for (String modele :

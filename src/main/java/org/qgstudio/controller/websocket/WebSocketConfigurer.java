@@ -1,3 +1,4 @@
+/*
 package org.qgstudio.controller.websocket;
 
 import org.qgstudio.service.impl.WebSocketHandler;
@@ -9,6 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+*/
 
 /**
  * @Description: websocket的配置类
@@ -18,9 +20,10 @@ import java.util.Properties;
  * @Date: 2019-07-26
  */
 
+/*
 @Configuration
 @EnableWebSocket
-public class WebSocketConfigurer implements org.springframework.web.socket.config.annotation.WebSocketConfigurer {
+public class WebSocketConfigurer implements org.springframework.web.ContextListener.config.annotation.WebSocketConfigurer {
 
 
     private static String url;
@@ -46,3 +49,4 @@ public class WebSocketConfigurer implements org.springframework.web.socket.confi
         return new WebSocketHandler();
     }
 }
+*/

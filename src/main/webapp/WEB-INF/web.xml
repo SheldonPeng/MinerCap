@@ -11,7 +11,7 @@
   </listener>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    <listener-class>org.qgstudio.controller.socket.SocketServer</listener-class>
+    <listener-class>org.qgstudio.controller.ContextListener.ContextListener</listener-class>
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>

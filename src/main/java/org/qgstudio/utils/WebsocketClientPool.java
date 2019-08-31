@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @Author: SheldonPeng
  * @Date: 2019-07-25
  */
-public class WebsocketClientPool {
+/*public class WebsocketClientPool {
 
     // 用于记录安卓客户端的连接session
     private static final CopyOnWriteArraySet<WebSocketSession> clients;
@@ -34,13 +34,13 @@ public class WebsocketClientPool {
         clients = new CopyOnWriteArraySet<WebSocketSession>();
     }
 
-    /**
+    *//**
      * @Description: 当新用户连接时，添加至集合中
      * @Param: []
      * @return: void
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
     public void addClient(WebSocketSession session) {
 
         // 检测是否已有用户在线
@@ -50,13 +50,13 @@ public class WebsocketClientPool {
     }
 
 
-    /**
+    *//**
      * @Description: 用户退出连接，移出集合
      * @Param: [session]
      * @return: void
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
 
     public void exitClient(WebSocketSession session) throws IOException {
 
@@ -73,13 +73,13 @@ public class WebsocketClientPool {
     }
 
 
-    /**
+    *//**
      * @Description: 获取所有在线用户的seesion
      * @Param: [session]
-     * @return: org.springframework.web.socket.WebSocketSession
+     * @return: org.springframework.web.ContextListener.WebSocketSession
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
     public List<WebSocketSession> getAllClient(){
 
         List<WebSocketSession> sessions = new ArrayList<>();
@@ -97,17 +97,17 @@ public class WebsocketClientPool {
     }
 
 
-    /**
+    *//**
      * @Description: 返回当前安卓客户端在线数目
      * @Param: []
      * @return: int
      * @Author: SheldonPeng
      * @Date: 2019-07-25
-     */
+     *//*
     public int getClientCount(){
 
         return clients.size();
     }
 
 
-}
+}*/
